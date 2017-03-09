@@ -26,7 +26,7 @@ final class Skipper
     }
 
     /**
-     * @param string[] $skipped
+     * @param string[][] $skipped
      */
     public function setSkipped(array $skipped): void
     {
