@@ -5,6 +5,8 @@ parameters:
         - "#Version456#"
         - "#Call to an undefined method Illuminate#" # false interface Laravel error
         - "#does not call parent constructor from PHP_CodeSniffer#"
+        - "#has invalid type Symplify#"
+        - "#should return callable#"
     excludes_analyse:
         - *packages/CodingStandard/tests/**/correct*
         - *packages/CodingStandard/tests/**/wrong*
