@@ -8,7 +8,6 @@ extensions:
 	- Kdyby\Annotations\DI\AnnotationsExtension
 	doctrine: Kdyby\Doctrine\DI\OrmExtension
 
-	- Symplify\DoctrineBehaviors\DI\BlameableExtension
 	- Symplify\DoctrineBehaviors\DI\LoggableExtension
 	- Symplify\DoctrineBehaviors\DI\SluggableExtension
 	- Symplify\DoctrineBehaviors\DI\SoftDeletableExtension

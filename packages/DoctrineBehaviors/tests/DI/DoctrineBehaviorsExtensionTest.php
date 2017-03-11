@@ -2,8 +2,7 @@
 
 namespace Symplify\DoctrineBehaviors\Tests\DI;
 
-use Doctrine\ORM\EntityManager;
-use Knp\DoctrineBehaviors\ORM\Blameable\BlameableSubscriber;
+use Doctrine\Common\EventManager;
 use Knp\DoctrineBehaviors\ORM\Loggable\LoggableSubscriber;
 use Knp\DoctrineBehaviors\ORM\Sluggable\SluggableSubscriber;
 use Knp\DoctrineBehaviors\ORM\SoftDeletable\SoftDeletableSubscriber;
@@ -18,13 +17,17 @@ final class DoctrineBehaviorsExtensionTest extends TestCase
     /**
      * @var int
      */
-    private const LISTENER_COUNT = 17;
+    private const LISTENER_COUNT = 13;
+
+    /**
+     * @var EventManager
+     */
+    private $eventManager;
 
     /**
      * @var string[]
      */
     private $listeners = [
-        BlameableSubscriber::class,
         LoggableSubscriber::class,
         SluggableSubscriber::class,
         SoftDeletableSubscriber::class,
@@ -33,16 +36,19 @@ final class DoctrineBehaviorsExtensionTest extends TestCase
         TreeSubscriber::class,
     ];
 
-    public function testExtensions(): void
+    protected function setUp()
     {
         $container = (new ContainerFactory)->create();
 
-        /** @var EntityManager $entityManager */
-        $entityManager = $container->getByType(EntityManager::class);
-        $this->assertInstanceOf(EntityManager::class, $entityManager);
+        $this->eventManager = $container->getByType(EventManager::class);
+    }
 
+
+    public function testExtensions(): void
+    {
         $count = 0;
-        foreach ($entityManager->getEventManager()->getListeners() as $listenerSet) {
+
+        foreach ($this->eventManager->getListeners() as $listenerSet) {
             foreach ($listenerSet as $listener) {
                 $this->assertContains(get_class($listener), $this->listeners);
                 ++$count;

@@ -9,7 +9,6 @@ Port of [KnpLabs/DoctrineBehaviors](https://github.com/KnpLabs/DoctrineBehaviors
 
 Supported behaviors:
 
-- Blameable
 - Geocodable
 - Loggable
 - Sluggable

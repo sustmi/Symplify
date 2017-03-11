@@ -36,6 +36,6 @@ final class AbstractBehaviorExtensionTest extends TestCase
         $definition = $this->abstractBehaviorsExtension->buildDefinitionFromCallablePublic(LoggerCallable::class);
 
         $this->assertSame(LoggerCallable::class, $definition->getClass());
-        $this->assertSame(LoggerCallable::class, $definition->getFactory()->getEntity());
+        $this->assertSame(LoggerCallable::class, $definition->getEntity());
     }
 }

@@ -29,7 +29,7 @@ final class TranslatableTest extends TestCase
         $category->addTag($tagNette);
 
         $this->assertInstanceOf(ArrayCollection::class, $category->getTags());
-        $this->assertSame(2, $category->getTags()->count());
+        $this->assertCount(2, $category->getTags());
         $this->assertTrue($category->hasTag($tagNette));
     }
 
