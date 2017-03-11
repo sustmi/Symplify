@@ -42,9 +42,11 @@ final class FixturesExtensionTest extends TestCase
         $loaderDefinition = $containerBuilder->getDefinitionByType(Loader::class);
 
         $this->assertSame(Loader::class, $loaderDefinition->getClass());
-        $arguments = $loaderDefinition->getFactory()->arguments;
-        $this->assertCount(3, $arguments);
-        $this->assertArrayHasKey('company', $arguments[1]);
+
+        $loaderFactory = $loaderDefinition->getFactory();
+
+        $this->assertCount(3, $loaderFactory->arguments);
+        $this->assertArrayHasKey('company', $loaderFactory->arguments[1]);
     }
 
     public function testLoadParsersToAliceLoader(): void

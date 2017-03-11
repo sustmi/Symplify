@@ -31,4 +31,9 @@ final class FileTokenEvent
     {
         return $this->position;
     }
+
+    public function getFilename(): string
+    {
+        return $this->file->getFilename();
+    }
 }

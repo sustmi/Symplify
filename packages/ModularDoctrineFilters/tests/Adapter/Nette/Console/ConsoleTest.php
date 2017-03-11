@@ -31,16 +31,16 @@ final class ConsoleTest extends TestCase
 
     public function testEnablingOnlyOnce(): void
     {
+        $filterCollection = $this->entityManager->getFilters();
+        $this->assertCount(0, $filterCollection->getEnabledFilters());
+
         $stringInput = new StringInput('help');
+        $this->consoleApplication->run($stringInput, new NullOutput);
 
-        $this->assertCount(0, $this->entityManager->getFilters()->getEnabledFilters());
+        $this->assertCount(2, $filterCollection->getEnabledFilters());
 
         $this->consoleApplication->run($stringInput, new NullOutput);
 
-        $this->assertCount(2, $this->entityManager->getFilters()->getEnabledFilters());
-
-        $this->consoleApplication->run($stringInput, new NullOutput);
-
-        $this->assertCount(2, $this->entityManager->getFilters()->getEnabledFilters());
+        $this->assertCount(2, $filterCollection->getEnabledFilters());
     }
 }

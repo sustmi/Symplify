@@ -61,4 +61,13 @@ class Category
     {
         return $this->path;
     }
+
+    public function getParentCategoryName(): ?string
+    {
+        if ($this->parent) {
+            return $this->parent->getName();
+        }
+
+        return null;
+    }
 }

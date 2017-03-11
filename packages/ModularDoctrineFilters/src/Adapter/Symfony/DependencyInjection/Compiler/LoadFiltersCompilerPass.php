@@ -57,8 +57,8 @@ final class LoadFiltersCompilerPass implements CompilerPassInterface
      */
     private function passFilterManagerToListener(): void
     {
-        $this->containerBuilder->getDefinition('symplify.enable_filters_subscriber')
-            ->addMethodCall('setFilterManager', [new Reference('symplify.filter_manager')]);
+        $enableFiltersSubscriber = $this->containerBuilder->getDefinition('symplify.enable_filters_subscriber');
+        $enableFiltersSubscriber->addMethodCall('setFilterManager', [new Reference('symplify.filter_manager')]);
     }
 
     /**

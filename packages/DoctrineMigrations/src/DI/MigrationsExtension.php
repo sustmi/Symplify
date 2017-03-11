@@ -6,6 +6,7 @@ use Arachne\EventDispatcher\DI\EventDispatcherExtension;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\AbstractCommand;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
+use Nette\DI\ServiceDefinition;
 use Symfony\Component\Console\Application;
 use Symplify\DoctrineMigrations\Configuration\Configuration;
 use Symplify\DoctrineMigrations\EventSubscriber\RegisterMigrationsEventSubscriber;
@@ -71,19 +72,11 @@ final class MigrationsExtension extends CompilerExtension
     private function addConfigurationDefinition(array $config): void
     {
         $containerBuilder = $this->getContainerBuilder();
-        $configurationDefinition = $containerBuilder->addDefinition($this->prefix('configuration'));
-        $configurationDefinition
-            ->setClass(Configuration::class)
-            ->addSetup('setMigrationsTableName', [$config['table']])
-            ->addSetup('setMigrationsColumnName', [$config['column']])
-            ->addSetup('setMigrationsDirectory', [$config['directory']])
-            ->addSetup('setMigrationsNamespace', [$config['namespace']]);
 
-        if ($config['versionsOrganization'] === Configuration::VERSIONS_ORGANIZATION_BY_YEAR) {
-            $configurationDefinition->addSetup('setMigrationsAreOrganizedByYear');
-        } elseif ($config['versionsOrganization'] === Configuration::VERSIONS_ORGANIZATION_BY_YEAR_AND_MONTH) {
-            $configurationDefinition->addSetup('setMigrationsAreOrganizedByYearAndMonth');
-        }
+        $containerBuilder->addDefinition(
+            $this->prefix('configuration'),
+            $this->createConfigurationServiceDefinition($config)
+        );
     }
 
     private function setConfigurationToCommands(): void
@@ -124,6 +117,32 @@ final class MigrationsExtension extends CompilerExtension
             throw new MissingExtensionException(
                 sprintf('Please register required extension "%s" to your config.', EventDispatcherExtension::class)
             );
+        }
+    }
+
+    /**
+     * @param string[] $config
+     */
+    private function createConfigurationServiceDefinition(array $config): ServiceDefinition
+    {
+        $configurationDefinition = new ServiceDefinition();
+        $configurationDefinition->setClass(Configuration::class);
+        $configurationDefinition->addSetup('setMigrationsTableName', [$config['table']]);
+        $configurationDefinition->addSetup('setMigrationsColumnName', [$config['column']]);
+        $configurationDefinition->addSetup('setMigrationsDirectory', [$config['directory']]);
+        $configurationDefinition->addSetup('setMigrationsNamespace', [$config['namespace']]);
+
+        $this->setupVersionsOrganization($config, $configurationDefinition);
+
+        return $configurationDefinition;
+    }
+
+    private function setupVersionsOrganization(array $config, ServiceDefinition $configurationDefinition): void
+    {
+        if ($config['versionsOrganization'] === Configuration::VERSIONS_ORGANIZATION_BY_YEAR) {
+            $configurationDefinition->addSetup('setMigrationsAreOrganizedByYear');
+        } elseif ($config['versionsOrganization'] === Configuration::VERSIONS_ORGANIZATION_BY_YEAR_AND_MONTH) {
+            $configurationDefinition->addSetup('setMigrationsAreOrganizedByYearAndMonth');
         }
     }
 }

@@ -39,9 +39,9 @@ final class FixturesExtension extends CompilerExtension
     {
         $config = $this->validateConfig($this->defaults);
 
-        $this->getContainerBuilder()
-            ->getDefinitionByType(Loader::class)
-            ->setArguments([
+        $containerBuilder = $this->getContainerBuilder();
+        $aliceLoaderDefinition = $containerBuilder->getDefinitionByType(Loader::class);
+        $aliceLoaderDefinition->setArguments([
                 $config['locale'],
                 $this->getContainerBuilder()
                     ->findByType(Base::class),

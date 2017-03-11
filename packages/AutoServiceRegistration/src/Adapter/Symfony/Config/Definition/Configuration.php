@@ -31,6 +31,9 @@ final class Configuration implements ConfigurationInterface
      */
     private $defaultClassSuffixesToSeek = ['Controller'];
 
+    /**
+     * @todo refactor to something common and readable
+     */
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder;

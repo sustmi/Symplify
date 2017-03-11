@@ -4,6 +4,7 @@ namespace Symplify\ModularDoctrineFilters\Tests\Adapter\Symfony;
 
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel;
 use Symplify\ModularDoctrineFilters\Tests\Adapter\Symfony\Controller\SomeController;
@@ -25,8 +26,8 @@ final class CompleteTest extends TestCase
         $this->kernel = new AppKernel('test', false);
         $this->kernel->boot();
 
-        $this->entityManager = $this->kernel->getContainer()
-            ->get('doctrine.orm.default_entity_manager');
+        $container = $this->kernel->getContainer();
+        $this->entityManager = $container->get('doctrine.orm.default_entity_manager');
     }
 
     public function testEnableFiltersViaSubscriber(): void

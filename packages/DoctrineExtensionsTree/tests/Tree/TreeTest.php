@@ -53,7 +53,7 @@ final class TreeTest extends TestCase
         $this->assertSame('Apple', $category->getName());
 
         $this->assertInstanceOf(Category::class, $category->getParent());
-        $this->assertSame('Fruit', $category->getParent()->getName());
+        $this->assertSame('Fruit', $category->getParentCategoryName());
     }
 
     public function testPath(): void
