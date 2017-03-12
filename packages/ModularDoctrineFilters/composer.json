@@ -10,7 +10,7 @@
         "symfony/dependency-injection": "^3.2",
         "symfony/event-dispatcher": "^3.2",
         "symfony/http-kernel": "^3.2",
-        "symplify/package-builder": "@dev"
+        "symplify/package-builder": "^1.4"
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^1.6",
