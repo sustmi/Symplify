@@ -16,7 +16,6 @@ skip:
         - PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff
 
     packages/DoctrineFixtures/src/Alice/AliceLoader.php:
-        - SlevomatCodingStandard\Sniffs\Namespaces\UnusedUsesSniff
         - SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff
 
     packages/CodingStandard/tests/Sniffs/SniffRunner.php:
@@ -87,10 +86,29 @@ checkers:
         nestingLevel: 3
         absoluteNestingLevel: 6
     - PHP_CodeSniffer\Standards\PSR2\Sniffs\Methods\MethodDeclarationSniff
+    - ObjectCalisthenics\Sniffs\Metrics\MaxNestingLevelSniff
+    ObjectCalisthenics\Sniffs\Metrics\MethodPerClassLimitSniff:
+        maxCount: 15 # 10 by default
+    - ObjectCalisthenics\Sniffs\Metrics\PropertyPerClassLimitSniff
+    - ObjectCalisthenics\Sniffs\Files\ClassElementLengthSniff
+    - ObjectCalisthenics\Sniffs\Files\FunctionLengthSniff
+    - ObjectCalisthenics\Sniffs\CodeAnalysis\InstancePropertyPerClassLimitSniff
+    ObjectCalisthenics\Sniffs\CodeAnalysis\OneObjectOperatorPerLineSniff:
+        variablesHoldingAFluentInterface:
+            - $containerBuilder
+            - $container
+            - $kernel
+            - $rootNode
+            - $requestMock
+            - $entityManagerMock
 
     # Naming Conventions
     - PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\UpperCaseConstantNameSniff
     - PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\CamelCapsFunctionNameSniff
+    - ObjectCalisthenics\Sniffs\NamingConventions\ClassNameLengthSniff
+    - ObjectCalisthenics\Sniffs\NamingConventions\ConstantNameLengthSniff
+    - ObjectCalisthenics\Sniffs\NamingConventions\FunctionNameLengthSniff
+    - ObjectCalisthenics\Sniffs\NamingConventions\VariableNameLengthSniff
 
     # PHP
     - PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\DisallowShortOpenTagSniff
@@ -104,14 +122,6 @@ checkers:
     - PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\ScopeKeywordSpacingSniff
     PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\SuperfluousWhitespaceSniff:
         ignoreBlankLines: false
-
-#includes:
-#    - packages/EasyCodingStandard/config/php-cs-fixer/psr1-fixers.neon
-#    - packages/EasyCodingStandard/config/php-cs-fixer/psr2-fixers.neon
-#    - packages/EasyCodingStandard/config/php-cs-fixer/symfony-fixers.neon
-#    - packages/EasyCodingStandard/config/php-cs-fixer/php56-migration-fixers.neon
-#    - packages/EasyCodingStandard/config/php-cs-fixer/php70-migration-fixers.neon
-#    - packages/EasyCodingStandard/config/php-cs-fixer/php71-migration-fixers.neon
 
     # Symplify: Commenting
     - Symplify\CodingStandard\Sniffs\Commenting\BlockPropertyCommentSniff
@@ -159,8 +169,6 @@ checkers:
     - SlevomatCodingStandard\Sniffs\Namespaces\DisallowGroupUseSniff
     - SlevomatCodingStandard\Sniffs\Namespaces\MultipleUsesPerLineSniff
     - SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff
-    SlevomatCodingStandard\Sniffs\Namespaces\UnusedUsesSniff:
-        searchAnnotations: true
     - SlevomatCodingStandard\Sniffs\Namespaces\UseDoesNotStartWithBackslashSniff
     - SlevomatCodingStandard\Sniffs\Namespaces\UseFromSameNamespaceSniff
 
@@ -188,37 +196,120 @@ checkers:
     # PHPUnit
     - PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer
 
-    # Object Calisthenics
-    - ObjectCalisthenics\Sniffs\CodeAnalysis\InstancePropertyPerClassLimitSniff
-    ObjectCalisthenics\Sniffs\Metrics\MethodPerClassLimitSniff:
-        maxCount: 15 # 10 by default
-    ObjectCalisthenics\Sniffs\CodeAnalysis\OneObjectOperatorPerLineSniff:
-        variablesHoldingAFluentInterface:
-            - $containerBuilder
-            - $container
-            - $kernel
-            - $rootNode
-            # todo: make work with paptters: *Mock
-            - $requestMock
-            - $entityManagerMock
-#            skip:
-#                packages/DoctrineMigrations/tests/DI/MigrationsExtension/BeforeCompileTest.php
-#    ObjectCalisthenics\Sniffs\Classes\ForbiddenPublicPropertySniff:
- # ObjectCalisthenics\Sniffs\ControlStructures\NoElseSniff
- # ObjectCalisthenics\Sniffs\Files\ClassElementLengthSniff
- # ObjectCalisthenics\Sniffs\Files\FunctionLengthSniff
+    # PSR1 (official)
+    - PhpCsFixer\Fixer\Basic\EncodingFixer
+    - PhpCsFixer\Fixer\PhpTag\FullOpeningTagFixer
 
- # too long stuff
- # ObjectCalisthenics\Sniffs\Metrics\MaxNestingLevelSniff
- # ObjectCalisthenics\Sniffs\Metrics\MethodPerClassLimitSniff
- # ObjectCalisthenics\Sniffs\Metrics\PropertyPerClassLimitSniff
+    # PSR2 (official)
+    - PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer
+    - PhpCsFixer\Fixer\Basic\BracesFixer
+    - PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer
+    - PhpCsFixer\Fixer\ControlStructure\ElseifFixer
+    - PhpCsFixer\Fixer\FunctionNotation\FunctionDeclarationFixer
+    - PhpCsFixer\Fixer\FunctionNotation\FunctionDeclarationFixer
+    - PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer
+    - PhpCsFixer\Fixer\Whitespace\LineEndingFixer
+    - PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer
+    - PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer
+    - PhpCsFixer\Fixer\PhpTag\NoClosingTagFixer
+    - PhpCsFixer\Fixer\FunctionNotation\NoSpacesAfterFunctionNameFixer
+    - PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer
+    - PhpCsFixer\Fixer\Whitespace\NoTrailingWhitespaceFixer
+    - PhpCsFixer\Fixer\Comment\NoTrailingWhitespaceInCommentFixer
+    - PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer
+    PhpCsFixer\Fixer\ClassNotation\SingleClassElementPerStatementFixer:
+        - property
+    - PhpCsFixer\Fixer\Import\SingleImportPerStatementFixer
+    - PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer
+    - PhpCsFixer\Fixer\ControlStructure\SwitchCaseSemicolonToColonFixer
+    - PhpCsFixer\Fixer\ControlStructure\SwitchCaseSpaceFixer
+    - PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer
 
- # too long naming
-        - ObjectCalisthenics\Sniffs\NamingConventions\ClassNameLengthSniff
-        - ObjectCalisthenics\Sniffs\NamingConventions\ConstantNameLengthSniff
-        - ObjectCalisthenics\Sniffs\NamingConventions\FunctionNameLengthSniff
-        - ObjectCalisthenics\Sniffs\NamingConventions\VariableNameLengthSniff
+    # Symfony (official)
+    PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer:
+        align_double_arrow: false
+        align_equals: false
+    - PhpCsFixer\Fixer\ReturnNotation\BlankLineBeforeReturnFixer
+    PhpCsFixer\Fixer\Basic\BracesFixer:
+        allow_single_line_closure: true
+    - PhpCsFixer\Fixer\CastNotation\CastSpacesFixer
+    PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer:
+        singleLine: true
+    - PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer
+    - PhpCsFixer\Fixer\FunctionNotation\FunctionTypehintSpaceFixer
+    - PhpCsFixer\Fixer\Comment\HashToSlashCommentFixer
+    - PhpCsFixer\Fixer\ControlStructure\IncludeFixer
+    - PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer
 
- # lvl: -1
- # ObjectCalisthenics\Sniffs\NamingConventions\NoSetterSniff
- #
+    - PhpCsFixer\Fixer\ClassNotation\MethodSeparationFixer
+    - PhpCsFixer\Fixer\Casing\NativeFunctionCasingFixer
+    - PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer
+    - PhpCsFixer\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixer
+    - PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer
+    - PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer
+    - PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer
+    PhpCsFixer\Fixer\Whitespace\NoExtraConsecutiveBlankLinesFixer:
+        - curly_brace_block
+        - extra
+        - parenthesis_brace_block
+        - square_brace_block
+        - throw
+        - use
+    - PhpCsFixer\Fixer\Import\NoLeadingImportSlashFixer
+    - PhpCsFixer\Fixer\NamespaceNotation\NoLeadingNamespaceWhitespaceFixer
+    - PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer
+    - PhpCsFixer\Fixer\ArrayNotation\NoMultilineWhitespaceAroundDoubleArrowFixer
+    - PhpCsFixer\Fixer\CastNotation\NoShortBoolCastFixer
+    - PhpCsFixer\Fixer\Semicolon\NoSinglelineWhitespaceBeforeSemicolonsFixer
+    # buggy, temp down: https://github.com/FriendsOfPHP/checkers/issues/2454
+    # - PhpCsFixer\Fixer\Whitespace\NoSpacesAroundOffsetFixer
+    - PhpCsFixer\Fixer\ControlStructure\NoTrailingCommaInListCallFixer
+    - PhpCsFixer\Fixer\ArrayNotation\NoTrailingCommaInSinglelineArrayFixer
+    - PhpCsFixer\Fixer\ControlStructure\NoUnneededControlParenthesesFixer
+    - PhpCsFixer\Fixer\Import\NoUnusedImportsFixer
+    - PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer
+    - PhpCsFixer\Fixer\Whitespace\NoWhitespaceInBlankLineFixer
+    - PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer
+    - PhpCsFixer\Fixer\Operator\ObjectOperatorWithoutWhitespaceFixer
+    - PhpCsFixer\Fixer\PhpUnit\PhpUnitFqcnAnnotationFixer
+    - PhpCsFixer\Fixer\Phpdoc\PhpdocAnnotationWithoutDotFixer
+    - PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer
+    - PhpCsFixer\Fixer\Phpdoc\PhpdocInlineTagFixer
+    - PhpCsFixer\Fixer\Phpdoc\PhpdocNoAccessFixer
+    - PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer
+    - PhpCsFixer\Fixer\Phpdoc\PhpdocNoPackageFixer
+    - PhpCsFixer\Fixer\Phpdoc\PhpdocNoUselessInheritdocFixer
+    - PhpCsFixer\Fixer\Phpdoc\PhpdocReturnSelfReferenceFixer
+    - PhpCsFixer\Fixer\Phpdoc\PhpdocScalarFixer
+    - PhpCsFixer\Fixer\Phpdoc\PhpdocSingleLineVarSpacingFixer
+    - PhpCsFixer\Fixer\Phpdoc\PhpdocSummaryFixer
+    - PhpCsFixer\Fixer\Phpdoc\PhpdocToCommentFixer
+    - PhpCsFixer\Fixer\Phpdoc\PhpdocTrimFixer
+    - PhpCsFixer\Fixer\Phpdoc\PhpdocTypesFixer
+    - PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer
+    - PhpCsFixer\Fixer\Operator\PreIncrementFixer
+    - PhpCsFixer\Fixer\FunctionNotation\ReturnTypeDeclarationFixer
+    - PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer
+    - PhpCsFixer\Fixer\CastNotation\ShortScalarCastFixer
+    - PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer
+    - PhpCsFixer\Fixer\ClassNotation\SingleClassElementPerStatementFixer
+    - PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer
+    - PhpCsFixer\Fixer\Semicolon\SpaceAfterSemicolonFixer
+    - PhpCsFixer\Fixer\Operator\StandardizeNotEqualsFixer
+    - PhpCsFixer\Fixer\Operator\TernaryOperatorSpacesFixer
+    - PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer
+    - PhpCsFixer\Fixer\ArrayNotation\WhitespaceAfterCommaInArrayFixer
+
+    # PHP 5.6 migration (official)
+    - PhpCsFixer\Fixer\Alias\PowToExponentiationFixer
+
+    # PHP 7.0 migration (official)
+    PhpCsFixer\Fixer\Alias\RandomApiMigrationFixer:
+        mt_rand: random_int
+        rand: random_int
+
+    # PHP 7.1 migration (official)
+    PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer:
+        - const
+        - property
+        - method
