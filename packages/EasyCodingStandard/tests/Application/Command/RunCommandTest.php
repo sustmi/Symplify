@@ -30,7 +30,7 @@ final class RunCommandTest extends TestCase
         ]);
 
         $this->assertCount(1, $runCommand->getSniffs());
-        $this->assertSame([0 => ClassDeclarationSniff::class], $runCommand->getSniffs());
+        $this->assertSame([ClassDeclarationSniff::class => []], $runCommand->getSniffs());
     }
 
     public function testFixers()
@@ -43,7 +43,7 @@ final class RunCommandTest extends TestCase
         ]);
 
         $this->assertCount(1, $runCommand->getFixers());
-        $this->assertSame([1 => DeclareStrictTypesFixer::class], $runCommand->getFixers());
+        $this->assertSame([DeclareStrictTypesFixer::class => []], $runCommand->getFixers());
     }
 
     private function createRunCommandWithConfiguration(array $configuration = []): RunCommand
