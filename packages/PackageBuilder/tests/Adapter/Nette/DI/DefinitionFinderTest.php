@@ -22,7 +22,7 @@ final class DefinitionFinderTest extends TestCase
 
     public function testAutowired(): void
     {
-        $definition = new ServiceDefinition();
+        $definition = new ServiceDefinition;
         $definition->setClass(stdClass::class);
 
         $this->containerBuilder->addDefinition('some', $definition);
@@ -32,7 +32,7 @@ final class DefinitionFinderTest extends TestCase
 
     public function testNonAutowired(): void
     {
-        $definition = new ServiceDefinition();
+        $definition = new ServiceDefinition;
         $definition->setClass(stdClass::class);
         $definition->setAutowired(false);
 

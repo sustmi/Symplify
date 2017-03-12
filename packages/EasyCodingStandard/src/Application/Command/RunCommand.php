@@ -155,6 +155,7 @@ final class RunCommand
     private function getCheckers(): array
     {
         $checkers = $this->configuration[self::OPTION_CHECKERS] ?? [];
+
         return ConfigurationNormalizer::normalizeClassesConfiguration($checkers);
     }
 }

@@ -125,7 +125,7 @@ final class MigrationsExtension extends CompilerExtension
      */
     private function createConfigurationServiceDefinition(array $config): ServiceDefinition
     {
-        $configurationDefinition = new ServiceDefinition();
+        $configurationDefinition = new ServiceDefinition;
         $configurationDefinition->setClass(Configuration::class);
         $configurationDefinition->addSetup('setMigrationsTableName', [$config['table']]);
         $configurationDefinition->addSetup('setMigrationsColumnName', [$config['column']]);

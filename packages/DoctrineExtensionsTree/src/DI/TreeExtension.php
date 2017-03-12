@@ -17,7 +17,7 @@ final class TreeExtension extends CompilerExtension
 
     private function createTreeListenerServiceDefinition(): ServiceDefinition
     {
-        $serviceDefinition = new ServiceDefinition();
+        $serviceDefinition = new ServiceDefinition;
         $serviceDefinition->setClass(TreeListener::class);
         $serviceDefinition->addSetup('setAnnotationReader', ['@Doctrine\Common\Annotations\Reader']);
         $serviceDefinition->addTag(EventsExtension::TAG_SUBSCRIBER);

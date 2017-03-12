@@ -67,7 +67,5 @@ class Category
         if ($this->parent) {
             return $this->parent->getName();
         }
-
-        return null;
     }
 }

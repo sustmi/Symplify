@@ -36,13 +36,12 @@ final class DoctrineBehaviorsExtensionTest extends TestCase
         TreeSubscriber::class,
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $container = (new ContainerFactory)->create();
 
         $this->eventManager = $container->getByType(EventManager::class);
     }
-
 
     public function testExtensions(): void
     {

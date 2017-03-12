@@ -33,7 +33,7 @@ final class BeforeCompileTest extends TestCase
 
         $this->containerBuilder->parameters = ['appDir' => __DIR__];
 
-        $consoleApplicationDefinition = new ServiceDefinition();
+        $consoleApplicationDefinition = new ServiceDefinition;
         $consoleApplicationDefinition->setClass(Application::class);
 
         $this->containerBuilder->addDefinition('console', $consoleApplicationDefinition);

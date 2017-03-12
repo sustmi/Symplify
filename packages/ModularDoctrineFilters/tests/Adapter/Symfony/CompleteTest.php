@@ -4,7 +4,6 @@ namespace Symplify\ModularDoctrineFilters\Tests\Adapter\Symfony;
 
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel;
 use Symplify\ModularDoctrineFilters\Tests\Adapter\Symfony\Controller\SomeController;
