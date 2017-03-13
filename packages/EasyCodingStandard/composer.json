@@ -27,8 +27,8 @@
         }
     },
     "repositories": [
-        { "type": "path", "url": "packages/SniffRunner" },
-        { "type": "path", "url": "packages/FixerRunner" },
-        { "type": "path", "url": "packages/ChangedFilesDetector" }
+        { "type": "path", "url": "packages/SniffRunner", "options": { "symlink": true } },
+        { "type": "path", "url": "packages/FixerRunner", "options": { "symlink": true } },
+        { "type": "path", "url": "packages/ChangedFilesDetector", "options": { "symlink": true } }
     ]
 }

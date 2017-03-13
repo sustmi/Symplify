@@ -163,6 +163,7 @@ checkers:
     - SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff
     SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
         usefulAnnotations:
+            - @todo
             - @dataProvider
             - @expectedException
     - SlevomatCodingStandard\Sniffs\Namespaces\AlphabeticallySortedUsesSniff
@@ -202,7 +203,6 @@ checkers:
 
     # PSR2 (official)
     - PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer
-    - PhpCsFixer\Fixer\Basic\BracesFixer
     - PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer
     - PhpCsFixer\Fixer\ControlStructure\ElseifFixer
     - PhpCsFixer\Fixer\FunctionNotation\FunctionDeclarationFixer
@@ -223,7 +223,6 @@ checkers:
     - PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer
     - PhpCsFixer\Fixer\ControlStructure\SwitchCaseSemicolonToColonFixer
     - PhpCsFixer\Fixer\ControlStructure\SwitchCaseSpaceFixer
-    - PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer
 
     # Symfony (official)
     PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer:
@@ -299,9 +298,6 @@ checkers:
     - PhpCsFixer\Fixer\Operator\TernaryOperatorSpacesFixer
     - PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer
     - PhpCsFixer\Fixer\ArrayNotation\WhitespaceAfterCommaInArrayFixer
-
-    # PHP 5.6 migration (official)
-    - PhpCsFixer\Fixer\Alias\PowToExponentiationFixer
 
     # PHP 7.0 migration (official)
     PhpCsFixer\Fixer\Alias\RandomApiMigrationFixer:
