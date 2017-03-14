@@ -5,6 +5,7 @@ namespace Symplify\DoctrineBehaviors\DI;
 use Kdyby\Events\DI\EventsExtension;
 use Knp\DoctrineBehaviors\Model\Tree\Node;
 use Knp\DoctrineBehaviors\ORM\Tree\TreeSubscriber;
+use Nette\DI\ServiceDefinition;
 use Nette\Utils\Validators;
 
 final class TreeExtension extends AbstractBehaviorExtension
@@ -21,16 +22,9 @@ final class TreeExtension extends AbstractBehaviorExtension
     {
         $config = $this->validateConfig($this->defaults);
         $this->validateConfigTypes($config);
-        $builder = $this->getContainerBuilder();
 
-        $builder->addDefinition($this->prefix('listener'))
-            ->setClass(TreeSubscriber::class, [
-                '@' . $this->getClassAnalyzer()->getClass(),
-                $config['isRecursive'],
-                $config['nodeTrait']
-            ])
-            ->setAutowired(false)
-            ->addTag(EventsExtension::TAG_SUBSCRIBER);
+        $containerBuilder = $this->getContainerBuilder();
+        $containerBuilder->addDefinition($this->prefix('listener'), $this->createListenerServiceDefinition($config));
     }
 
     /**
@@ -40,5 +34,23 @@ final class TreeExtension extends AbstractBehaviorExtension
     {
         Validators::assertField($config, 'isRecursive', 'bool');
         Validators::assertField($config, 'nodeTrait', 'type');
+    }
+
+    /**
+     * @param mixed[] $config
+     */
+    private function createListenerServiceDefinition(array $config): ServiceDefinition
+    {
+        $listenerServiceDefinition = new ServiceDefinition();
+        $listenerServiceDefinition->setClass(TreeSubscriber::class);
+        $listenerServiceDefinition->setArguments([
+            '@' . $this->getClassAnalyzer()->getClass(),
+            $config['isRecursive'],
+            $config['nodeTrait']
+        ]);
+        $listenerServiceDefinition->setAutowired(false);
+        $listenerServiceDefinition->addTag(EventsExtension::TAG_SUBSCRIBER);
+
+        return $listenerServiceDefinition;
     }
 }

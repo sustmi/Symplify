@@ -137,6 +137,10 @@ final class MigrationsExtension extends CompilerExtension
         return $configurationDefinition;
     }
 
+    /**
+     * @param string[] $config
+     * @param ServiceDefinition $configurationDefinition
+     */
     private function setupVersionsOrganization(array $config, ServiceDefinition $configurationDefinition): void
     {
         if ($config['versionsOrganization'] === Configuration::VERSIONS_ORGANIZATION_BY_YEAR) {

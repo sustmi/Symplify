@@ -5,7 +5,7 @@ namespace Symplify\DoctrineBehaviors\DI;
 use Kdyby\Events\DI\EventsExtension;
 use Knp\DoctrineBehaviors\Model\Translatable\Translation;
 use Knp\DoctrineBehaviors\ORM\Translatable\TranslatableSubscriber;
-use Nette\Utils\AssertionException;
+use Nette\DI\ServiceDefinition;
 use Nette\Utils\Validators;
 use Symplify\DoctrineBehaviors\Entities\Attributes\TranslatableTrait;
 
@@ -27,25 +27,13 @@ final class TranslatableExtension extends AbstractBehaviorExtension
     {
         $config = $this->validateConfig($this->defaults);
         $this->validateConfigTypes($config);
-        $builder = $this->getContainerBuilder();
 
-        $builder->addDefinition($this->prefix('listener'))
-            ->setClass(TranslatableSubscriber::class, [
-                '@' . $this->getClassAnalyzer()->getClass(),
-                $config['currentLocaleCallable'],
-                $config['defaultLocaleCallable'],
-                $config['translatableTrait'],
-                $config['translationTrait'],
-                $config['translatableFetchMode'],
-                $config['translationFetchMode']
-            ])
-            ->setAutowired(false)
-            ->addTag(EventsExtension::TAG_SUBSCRIBER);
+        $containerBuilder = $this->getContainerBuilder();
+        $containerBuilder->addDefinition($this->prefix('listener'), $this->createListenerServiceDefinition($config));
     }
 
     /**
      * @param mixed[] $config
-     * @throws AssertionException
      */
     private function validateConfigTypes(array $config): void
     {
@@ -54,5 +42,27 @@ final class TranslatableExtension extends AbstractBehaviorExtension
         Validators::assertField($config, 'translationTrait', 'type');
         Validators::assertField($config, 'translatableFetchMode', 'string');
         Validators::assertField($config, 'translationFetchMode', 'string');
+    }
+
+    /**
+     * @param mixed[] $config
+     */
+    private function createListenerServiceDefinition(array $config): ServiceDefinition
+    {
+        $listenerServiceDefinition = new ServiceDefinition();
+        $listenerServiceDefinition->setClass(TranslatableSubscriber::class);
+        $listenerServiceDefinition->setArguments([
+            '@' . $this->getClassAnalyzer()->getClass(),
+            $config['currentLocaleCallable'],
+            $config['defaultLocaleCallable'],
+            $config['translatableTrait'],
+            $config['translationTrait'],
+            $config['translatableFetchMode'],
+            $config['translationFetchMode']
+        ]);
+        $listenerServiceDefinition->setAutowired(false);
+        $listenerServiceDefinition->addTag(EventsExtension::TAG_SUBSCRIBER);
+
+        return $listenerServiceDefinition;
     }
 }

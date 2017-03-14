@@ -140,6 +140,8 @@ final class RunCommand
     }
 
     /**
+     * @param string[] $classes
+     * @param string $type
      * @return string[]
      */
     private function filterClassesByType(array $classes, string $type): array
